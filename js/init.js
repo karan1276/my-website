@@ -105,20 +105,43 @@
 
 		// Main Sections: Two.
 
-			// Lightbox gallery.
-				$('#two').poptrox({
-					caption: function($a) { return $a.next('h3').text(); },
-					overlayColor: '#2c2c2c',
-					overlayOpacity: 0.85,
-					popupCloserText: '',
-					popupLoaderText: '',
-					selector: '.work-item a',
-					usePopupCaption: true,
-					usePopupDefaultStyling: false,
-					usePopupEasyClose: false,
-					usePopupNav: true,
-					windowMargin: (skel.isActive('small') ? 0 : 50)
-				});
+		//sending e-mail with mandrill
+		$("#send").click(function(){
+			var name = $("#name").val();
+			var email = $("#email").val();
+			var message = $("#message").val();
+			
+			$.ajax({
+				  type: 'POST',
+				  url: 'https://mandrillapp.com/api/1.0/messages/send.json',
+				  data: {
+				    'key': 'W45uS48dZFrqnWnP_IzoEg',
+				    'message': {
+				      'from_email': email,
+				      'to': [
+				          {
+				            'email': 'karan1276@gmail.com',
+				            'name': 'Karan Sharma',
+				            'type': 'to'
+				          },
+				        ],
+				      'autotext': 'true',
+				      'subject': 'mail from'+name,
+				      'html' : message,
+				    }
+				  }
+				 }).done(function(response) {
+				   console.log(response); // if you're into that sorta thing
+				   if(response=!null){
+				   	$( "#send" ).after( "<p>Mail sent, thank you for your time.</p>" );
+				   }
+				   else{
+				   	$( "#send" ).after( "<p>Oops!!! we got some errors, mail not sent. Try me on facebook.</p>" );
+				   }
+				 });
+				 
+			});
+			
 
 	});
 
